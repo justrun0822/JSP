@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Interface</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .search-bar {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .search-bar input {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        .search-bar button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .search-bar button:hover {
+            background-color: #45a049;
+        }
+        .results {
+            margin-top: 20px;
+        }
+        .results ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .results li {
+            padding: 10px;
+            background-color: #f1f1f1;
+            margin-bottom: 5px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Search Results</h2>
+    <!-- Search Bar -->
+    <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Enter your search term">
+        <button onclick="search()">Search</button>
+    </div>
+
+    <!-- Results Display -->
+    <div class="results" id="results">
+        <ul id="resultList">
+            <!-- Search results will be displayed here -->
+        </ul>
+    </div>
+</div>
+
+<script>
+    // Dummy data for search results
+    const data = [
+        'Apple1',
+        'Apple2',
+        'Apple3',
+        'Apple4',
+        'Apple5',
+        'Banana',
+        'Orange',
+        'Mango',
+        'Pineapple',
+        'Grapes',
+        'Watermelon',
+        'Blueberry',
+        'Strawberry',
+        'Peach'
+    ];
+
+    // Function to perform search
+    function search() {
+        const query = document.getElementById('searchInput').value.toLowerCase();
+        const filteredResults = data.filter(item => item.toLowerCase().includes(query));
+
+        // Display the results
+        const resultList = document.getElementById('resultList');
+        resultList.innerHTML = '';  // Clear previous results
+
+        if (filteredResults.length > 0) {
+            filteredResults.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = item;
+                resultList.appendChild(li);
+            });
+        } else {
+            const li = document.createElement('li');
+            li.textContent = 'No results found';
+            resultList.appendChild(li);
+        }
+    }
+</script>
+
+</body>
+</html>
