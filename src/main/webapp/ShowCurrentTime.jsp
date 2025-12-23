@@ -6,9 +6,9 @@
 <head>
     <meta charset="UTF-8">
     <title>显示当前时间</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common.css">
     <style>
         body {
-            font-family: Arial, sans-serif;
             background-color: #f4f4f4;
             padding: 20px;
         }
@@ -19,10 +19,6 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             max-width: 600px;
             margin: 0 auto;
-        }
-        h1 {
-            color: #333;
-            text-align: center;
         }
         .time-display {
             font-size: 24px;

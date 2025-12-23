@@ -1,0 +1,23 @@
+-- 创建数据库
+CREATE DATABASE IF NOT EXISTS jsp_db DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+USE jsp_db;
+
+-- 聊天消息表
+CREATE TABLE IF NOT EXISTS messages (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '消息ID',
+    username VARCHAR(50) NOT NULL COMMENT '用户名',
+    content TEXT NOT NULL COMMENT '消息内容',
+    create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    INDEX idx_create_time (create_time DESC)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='聊天消息表';
+
+-- 访客统计表
+CREATE TABLE IF NOT EXISTS visitor_stats (
+    id INT PRIMARY KEY AUTO_INCREMENT COMMENT '统计ID',
+    total_count BIGINT NOT NULL DEFAULT 0 COMMENT '总访客数',
+    update_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='访客统计表';
+
+-- 初始化访客统计数据
+INSERT INTO visitor_stats (total_count) VALUES (0);

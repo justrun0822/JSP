@@ -5,85 +5,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Request 对象信息展示</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 20px;
-        }
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            background-color: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        h1 {
-            color: #333;
-            text-align: center;
-            margin-bottom: 10px;
-        }
-        .subtitle {
-            text-align: center;
-            color: #666;
-            margin-bottom: 30px;
-        }
-        .info-section {
-            margin-bottom: 30px;
-        }
-        .section-title {
-            background-color: #667eea;
-            color: white;
-            padding: 10px 15px;
-            border-radius: 5px;
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
-        .info-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 10px;
-        }
-        .info-item {
-            background-color: #f8f9fa;
-            padding: 12px;
-            border-radius: 5px;
-            border-left: 3px solid #667eea;
-        }
-        .info-label {
-            font-weight: bold;
-            color: #333;
-            display: inline-block;
-            min-width: 180px;
-        }
-        .info-value {
-            color: #555;
-            word-break: break-all;
-        }
-        .highlight {
-            background-color: #fff3cd;
-            border-left-color: #ffc107;
-        }
-        .back-link {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 10px 20px;
-            background-color: #667eea;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-        .back-link:hover {
-            background-color: #5568d3;
-        }
-        .empty-value {
-            color: #999;
-            font-style: italic;
-        }
-    </style>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/request.css">
 </head>
 <body>
     <div class="container">

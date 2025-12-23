@@ -1,5 +1,7 @@
 package com.ztq.servlet;
 
+import com.ztq.dao.MessageDAO;
+import com.ztq.entity.Message;
 import org.apache.commons.text.StringEscapeUtils;
 
 import javax.servlet.ServletException;
@@ -9,13 +11,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 @WebServlet("/sendMessage")
 public class MessageServlet extends HttpServlet {
     
     private static final int MAX_MESSAGE_LENGTH = 500;
+    private static final int MAX_MESSAGES_KEEP = 100;
+    
+    private MessageDAO messageDAO = new MessageDAO();
     
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
@@ -23,16 +26,16 @@ public class MessageServlet extends HttpServlet {
         
         request.setCharacterEncoding("UTF-8");
         
-        String message = request.getParameter("message");
+        String messageContent = request.getParameter("message");
         
-        if (message == null || message.trim().isEmpty()) {
+        if (messageContent == null || messageContent.trim().isEmpty()) {
             response.sendRedirect("chat.jsp?error=empty");
             return;
         }
         
-        message = message.trim();
+        messageContent = messageContent.trim();
         
-        if (message.length() > MAX_MESSAGE_LENGTH) {
+        if (messageContent.length() > MAX_MESSAGE_LENGTH) {
             response.sendRedirect("chat.jsp?error=toolong");
             return;
         }
@@ -44,22 +47,16 @@ public class MessageServlet extends HttpServlet {
             session.setAttribute("username", username);
         }
         
-        message = StringEscapeUtils.escapeHtml4(message);
+        messageContent = StringEscapeUtils.escapeHtml4(messageContent);
         
-        String formattedMessage = username + ": " + message;
+        Message message = new Message(username, messageContent);
+        boolean success = messageDAO.addMessage(message);
         
-        @SuppressWarnings("unchecked")
-        List<String> messages = (List<String>) getServletContext().getAttribute("messages");
-        if (messages == null) {
-            messages = new ArrayList<>();
-        }
-        
-        synchronized (getServletContext()) {
-            messages.add(formattedMessage);
-            if (messages.size() > 100) {
-                messages.remove(0);
+        if (success) {
+            int messageCount = messageDAO.getMessageCount();
+            if (messageCount > MAX_MESSAGES_KEEP) {
+                messageDAO.deleteOldMessages(MAX_MESSAGES_KEEP);
             }
-            getServletContext().setAttribute("messages", messages);
         }
         
         response.sendRedirect("chat.jsp");
