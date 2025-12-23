@@ -1,8 +1,9 @@
 package com.ztq.servlet;
 
-import com.ztq.dao.MessageDAO;
-import com.ztq.entity.Message;
+import com.ztq.service.MessageService;
 import org.apache.commons.text.StringEscapeUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,10 +16,10 @@ import java.io.IOException;
 @WebServlet("/sendMessage")
 public class MessageServlet extends HttpServlet {
     
+    private static final Logger logger = LoggerFactory.getLogger(MessageServlet.class);
     private static final int MAX_MESSAGE_LENGTH = 500;
-    private static final int MAX_MESSAGES_KEEP = 100;
     
-    private MessageDAO messageDAO = new MessageDAO();
+    private MessageService messageService = new MessageService();
     
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
@@ -49,14 +50,11 @@ public class MessageServlet extends HttpServlet {
         
         messageContent = StringEscapeUtils.escapeHtml4(messageContent);
         
-        Message message = new Message(username, messageContent);
-        boolean success = messageDAO.addMessage(message);
+        logger.info("用户 {} 发送消息", username);
+        boolean success = messageService.saveMessage(username, messageContent);
         
-        if (success) {
-            int messageCount = messageDAO.getMessageCount();
-            if (messageCount > MAX_MESSAGES_KEEP) {
-                messageDAO.deleteOldMessages(MAX_MESSAGES_KEEP);
-            }
+        if (!success) {
+            logger.error("消息保存失败 - 用户: {}", username);
         }
         
         response.sendRedirect("chat.jsp");

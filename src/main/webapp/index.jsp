@@ -11,7 +11,30 @@
 </head>
 <body class="gradient-bg">
 <div class="container">
-    <h1>🎉 Hello World!</h1>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h1>🎉 Hello World!</h1>
+        <div style="display: flex; gap: 10px;">
+            <c:choose>
+                <c:when test="${not empty sessionScope.userId}">
+                    <span style="color: #667eea; font-weight: bold;">👤 ${sessionScope.username}</span>
+                    <a href="${pageContext.request.contextPath}/logout" 
+                       style="padding: 8px 16px; background-color: #dc3545; color: white; text-decoration: none; border-radius: 4px;">
+                        退出
+                    </a>
+                </c:when>
+                <c:otherwise>
+                    <a href="${pageContext.request.contextPath}/login" 
+                       style="padding: 8px 16px; background-color: #667eea; color: white; text-decoration: none; border-radius: 4px;">
+                        登录
+                    </a>
+                    <a href="${pageContext.request.contextPath}/register" 
+                       style="padding: 8px 16px; background-color: #28a745; color: white; text-decoration: none; border-radius: 4px;">
+                        注册
+                    </a>
+                </c:otherwise>
+            </c:choose>
+        </div>
+    </div>
     <p class="subtitle">欢迎来到 JSP 学习项目</p>
     
     <div class="time-info">

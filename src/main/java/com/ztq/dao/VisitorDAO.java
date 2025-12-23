@@ -1,6 +1,8 @@
 package com.ztq.dao;
 
 import com.ztq.util.DBUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,6 +10,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class VisitorDAO {
+    
+    private static final Logger logger = LoggerFactory.getLogger(VisitorDAO.class);
     
     public long incrementAndGetCount() {
         Connection conn = null;

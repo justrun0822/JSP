@@ -2,12 +2,16 @@ package com.ztq.dao;
 
 import com.ztq.entity.Message;
 import com.ztq.util.DBUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MessageDAO {
+    
+    private static final Logger logger = LoggerFactory.getLogger(MessageDAO.class);
     
     public boolean addMessage(Message message) {
         String sql = "INSERT INTO messages (username, content) VALUES (?, ?)";
@@ -98,14 +102,50 @@ public class MessageDAO {
             conn = DBUtil.getConnection();
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, keepCount);
-            pstmt.executeUpdate();
+            int deleted = pstmt.executeUpdate();
+            logger.debug("删除旧消息，删除数量: {}", deleted);
             return true;
             
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("删除旧消息失败", e);
             return false;
         } finally {
             DBUtil.close(pstmt, conn);
         }
+    }
+    
+    public List<Message> getMessagesByPage(int page, int pageSize) {
+        String sql = "SELECT id, username, content, create_time FROM messages ORDER BY create_time DESC LIMIT ? OFFSET ?";
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        List<Message> messages = new ArrayList<>();
+        
+        try {
+            conn = DBUtil.getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, pageSize);
+            pstmt.setInt(2, (page - 1) * pageSize);
+            
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Message msg = new Message();
+                msg.setId(rs.getLong("id"));
+                msg.setUsername(rs.getString("username"));
+                msg.setContent(rs.getString("content"));
+                msg.setCreateTime(rs.getTimestamp("create_time"));
+                messages.add(msg);
+            }
+            
+            java.util.Collections.reverse(messages);
+            logger.debug("分页查询消息 - 页码: {}, 每页: {}, 结果数: {}", page, pageSize, messages.size());
+            
+        } catch (SQLException e) {
+            logger.error("分页查询消息失败", e);
+        } finally {
+            DBUtil.close(rs, pstmt, conn);
+        }
+        
+        return messages;
     }
 }
