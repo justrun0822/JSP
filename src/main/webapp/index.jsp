@@ -47,7 +47,11 @@
         <div class="nav-grid">
             <a href="chat.jsp" class="nav-card">
                 <h3>💬 聊天室</h3>
-                <p>简易在线聊天功能</p>
+                <p>简易在线聊天功能（Ajax）</p>
+            </a>
+            <a href="chat-realtime.jsp" class="nav-card" style="border: 2px solid #28a745;">
+                <h3>🚀 实时聊天室</h3>
+                <p>WebSocket 实时通信 <span style="color: #28a745;">★ 新功能</span></p>
             </a>
             <a href="visitor" class="nav-card">
                 <h3>👥 访客计数</h3>
